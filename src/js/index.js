@@ -1,0 +1,1 @@
+var xml=new XMLHttpRequest;xml.open("get","/data",!0),xml.onreadystatechange=function(){4===xml.readyState&&200===xml.status&&console.log(xml.responseText)},xml.send();

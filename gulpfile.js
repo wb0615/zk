@@ -2,9 +2,11 @@ var gulp = require('gulp');
 var scss = require('gulp-sass');
 var cssmin = require('gulp-clean-css');
 var server = require('gulp-webserver');
+// var babel=require('gulp-babel')
+var uglify = require('gulp-uglify')
 
 
-//编译scss
+//编译scss  并且压缩css
 gulp.task('scss', function() {
     return gulp.src('./src/scss/*.scss')
         .pipe(scss())
@@ -23,11 +25,19 @@ gulp.task('server', function() {
         .pipe(server({
             port: 8083,
             livereload: true, //自动刷新
-            open: true, //自动打来浏览器
+            open: true, //自动打开浏览器
             middleware: function(req, res, next) {
                 res.end('12')
             }
         }))
 })
+
+//合并js  并且压缩js
+gulp.task('bUglify', function() {
+    return gulp.src(['./src/js/*.js'])
+        .pipe(uglify())
+        .pipe(gulp.dest('./src/js'))
+})
+
 
 gulp.task('dev', gulp.series('scss', 'server', 'watch'))
