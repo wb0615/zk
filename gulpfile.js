@@ -22,9 +22,11 @@ gulp.task('server', function() {
     return gulp.src('./src')
         .pipe(server({
             port: 8083,
-            // middleware: function(req, res, next) {
-
-            // }
+            livereload: true, //自动刷新
+            open: true, //自动打来浏览器
+            middleware: function(req, res, next) {
+                res.end('12')
+            }
         }))
 })
 
