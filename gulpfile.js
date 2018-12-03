@@ -4,6 +4,7 @@ var cssmin = require('gulp-clean-css');
 var server = require('gulp-webserver');
 // var babel=require('gulp-babel')
 var uglify = require('gulp-uglify')
+var url = require('url');
 
 
 //编译scss  并且压缩css
@@ -27,7 +28,16 @@ gulp.task('server', function() {
             livereload: true, //自动刷新
             open: true, //自动打开浏览器
             middleware: function(req, res, next) {
-                res.end('12')
+                if (req.url === '/favicon.ico') {
+                    return res.end()
+                }
+                var pathname = url.parse(req.url).pathname;
+                console.log(pathname)
+                pathname = pathname === '/' ? 'index.html' : pathname;
+                if (pathname === '/data') {
+                    res.end(JSON.stringify({ code: 0 }))
+                }
+                next();
             }
         }))
 })
@@ -39,5 +49,5 @@ gulp.task('bUglify', function() {
         .pipe(gulp.dest('./src/js'))
 })
 
-
-gulp.task('dev', gulp.series('scss', 'server', 'watch'))
+//默认default
+gulp.task('default', gulp.series('server', 'scss', 'bUglify', 'watch'))
